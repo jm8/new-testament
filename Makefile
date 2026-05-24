@@ -1,6 +1,6 @@
 all:
 	rm -rf out
-	mkdir -p out/kjv out/esv out/none
+	mkdir -p out/kjv out/esv out/nasb out/none
 
 	typst compile new_testament.typ --input version=KJV --input sblgnt_filename=sblgnt/61-Mt-morphgnt.txt --input book_name="Matthew" out/kjv/"Matthew".pdf
 	typst compile new_testament.typ --input version=KJV --input sblgnt_filename=sblgnt/62-Mk-morphgnt.txt --input book_name="Mark" out/kjv/"Mark".pdf
@@ -57,6 +57,34 @@ all:
 	typst compile new_testament.typ --input version=ESV --input sblgnt_filename=sblgnt/85-3Jn-morphgnt.txt --input book_name="3 John" out/esv/"3_John".pdf
 	typst compile new_testament.typ --input version=ESV --input sblgnt_filename=sblgnt/86-Jud-morphgnt.txt --input book_name="Jude" out/esv/"Jude".pdf
 	typst compile new_testament.typ --input version=ESV --input sblgnt_filename=sblgnt/87-Re-morphgnt.txt --input book_name="Revelation" out/esv/"Revelation".pdf
+
+	typst compile new_testament.typ --input version=NASB1995 --input sblgnt_filename=sblgnt/61-Mt-morphgnt.txt --input book_name="Matthew" out/nasb/"Matthew".pdf
+	typst compile new_testament.typ --input version=NASB1995 --input sblgnt_filename=sblgnt/62-Mk-morphgnt.txt --input book_name="Mark" out/nasb/"Mark".pdf
+	typst compile new_testament.typ --input version=NASB1995 --input sblgnt_filename=sblgnt/63-Lk-morphgnt.txt --input book_name="Luke" out/nasb/"Luke".pdf
+	typst compile new_testament.typ --input version=NASB1995 --input sblgnt_filename=sblgnt/64-Jn-morphgnt.txt --input book_name="John" out/nasb/"John".pdf
+	typst compile new_testament.typ --input version=NASB1995 --input sblgnt_filename=sblgnt/65-Ac-morphgnt.txt --input book_name="Acts" out/nasb/"Acts".pdf
+	typst compile new_testament.typ --input version=NASB1995 --input sblgnt_filename=sblgnt/66-Ro-morphgnt.txt --input book_name="Romans" out/nasb/"Romans".pdf
+	typst compile new_testament.typ --input version=NASB1995 --input sblgnt_filename=sblgnt/67-1Co-morphgnt.txt --input book_name="1 Corinthians" out/nasb/"1_Corinthians".pdf
+	typst compile new_testament.typ --input version=NASB1995 --input sblgnt_filename=sblgnt/68-2Co-morphgnt.txt --input book_name="2 Corinthians" out/nasb/"2_Corinthians".pdf
+	typst compile new_testament.typ --input version=NASB1995 --input sblgnt_filename=sblgnt/69-Ga-morphgnt.txt --input book_name="Galatians" out/nasb/"Galatians".pdf
+	typst compile new_testament.typ --input version=NASB1995 --input sblgnt_filename=sblgnt/70-Eph-morphgnt.txt --input book_name="Ephesians" out/nasb/"Ephesians".pdf
+	typst compile new_testament.typ --input version=NASB1995 --input sblgnt_filename=sblgnt/71-Php-morphgnt.txt --input book_name="Philippians" out/nasb/"Philippians".pdf
+	typst compile new_testament.typ --input version=NASB1995 --input sblgnt_filename=sblgnt/72-Col-morphgnt.txt --input book_name="Colossians" out/nasb/"Colossians".pdf
+	typst compile new_testament.typ --input version=NASB1995 --input sblgnt_filename=sblgnt/73-1Th-morphgnt.txt --input book_name="1 Thessalonians" out/nasb/"1_Thessalonians".pdf
+	typst compile new_testament.typ --input version=NASB1995 --input sblgnt_filename=sblgnt/74-2Th-morphgnt.txt --input book_name="2 Thessalonians" out/nasb/"2_Thessalonians".pdf
+	typst compile new_testament.typ --input version=NASB1995 --input sblgnt_filename=sblgnt/75-1Ti-morphgnt.txt --input book_name="1 Timothy" out/nasb/"1_Timothy".pdf
+	typst compile new_testament.typ --input version=NASB1995 --input sblgnt_filename=sblgnt/76-2Ti-morphgnt.txt --input book_name="2 Timothy" out/nasb/"2_Timothy".pdf
+	typst compile new_testament.typ --input version=NASB1995 --input sblgnt_filename=sblgnt/77-Tit-morphgnt.txt --input book_name="Titus" out/nasb/"Titus".pdf
+	typst compile new_testament.typ --input version=NASB1995 --input sblgnt_filename=sblgnt/78-Phm-morphgnt.txt --input book_name="Philemon" out/nasb/"Philemon".pdf
+	typst compile new_testament.typ --input version=NASB1995 --input sblgnt_filename=sblgnt/79-Heb-morphgnt.txt --input book_name="Hebrews" out/nasb/"Hebrews".pdf
+	typst compile new_testament.typ --input version=NASB1995 --input sblgnt_filename=sblgnt/80-Jas-morphgnt.txt --input book_name="James" out/nasb/"James".pdf
+	typst compile new_testament.typ --input version=NASB1995 --input sblgnt_filename=sblgnt/81-1Pe-morphgnt.txt --input book_name="1 Peter" out/nasb/"1_Peter".pdf
+	typst compile new_testament.typ --input version=NASB1995 --input sblgnt_filename=sblgnt/82-2Pe-morphgnt.txt --input book_name="2 Peter" out/nasb/"2_Peter".pdf
+	typst compile new_testament.typ --input version=NASB1995 --input sblgnt_filename=sblgnt/83-1Jn-morphgnt.txt --input book_name="1 John" out/nasb/"1_John".pdf
+	typst compile new_testament.typ --input version=NASB1995 --input sblgnt_filename=sblgnt/84-2Jn-morphgnt.txt --input book_name="2 John" out/nasb/"2_John".pdf
+	typst compile new_testament.typ --input version=NASB1995 --input sblgnt_filename=sblgnt/85-3Jn-morphgnt.txt --input book_name="3 John" out/nasb/"3_John".pdf
+	typst compile new_testament.typ --input version=NASB1995 --input sblgnt_filename=sblgnt/86-Jud-morphgnt.txt --input book_name="Jude" out/nasb/"Jude".pdf
+	typst compile new_testament.typ --input version=NASB1995 --input sblgnt_filename=sblgnt/87-Re-morphgnt.txt --input book_name="Revelation" out/nasb/"Revelation".pdf
 
 	typst compile new_testament.typ --input sblgnt_filename=sblgnt/61-Mt-morphgnt.txt --input book_name="Matthew" out/none/"Matthew".pdf
 	typst compile new_testament.typ --input sblgnt_filename=sblgnt/62-Mk-morphgnt.txt --input book_name="Mark" out/none/"Mark".pdf
