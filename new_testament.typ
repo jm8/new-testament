@@ -8,11 +8,14 @@
 }
 #set text(size: 18pt)
 
+#let chapter_counter = counter("chapter")
+#chapter_counter.update(1)
+
 #set page(
   paper: "us-letter",
   header: grid(
     columns: (50%, 50%),
-    align(left, text(rgb("#444444"), book_name)),
+    align(left, text(rgb("#444444"), context [#book_name #chapter_counter.get().first()])),
     align(right, text(rgb("#444444"), [SBLGNT#if version != none [#"/" #version]])),
   ),
   margin: (
@@ -177,6 +180,7 @@
 
 #for (i, chapter) in chapters.enumerate(start: 1) {
   [== Chapter #i]
+  chapter_counter.update(i)
   for (j, verse) in chapter.enumerate(start: 1) {
     grid(
       columns: if version == none { (.5em, 1fr) } else { (.5em, 6fr, 4fr) },
