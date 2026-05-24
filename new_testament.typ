@@ -109,7 +109,7 @@
     old_verse = verse
   }
 
-  let t = t.replace("⸀", "").replace("⸂", "").replace("⸃", "").replace("⸁")
+  let t = t.replace("⸀", "").replace("⸂", "").replace("⸃", "").replace("⸁", "")
 
   let (
     person,
