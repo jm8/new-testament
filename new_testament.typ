@@ -9,6 +9,7 @@
 #set text(size: 18pt)
 
 #set page(
+  paper: "us-letter",
   header: grid(
     columns: (50%, 50%),
     align(left, text(rgb("#444444"), book_name)),
