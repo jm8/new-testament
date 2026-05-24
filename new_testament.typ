@@ -1,17 +1,20 @@
-#let sblgnt_filename = sys.inputs.at("sblgnt_filename") 
-#let book_name = sys.inputs.at("book_name") 
-#let version = sys.inputs.at("version")
+#let sblgnt_filename = sys.inputs.at("sblgnt_filename")
+#let book_name = sys.inputs.at("book_name")
+#let version = sys.inputs.at("version", default: none)
 #let book = read(sblgnt_filename).split("\n").map(it => it.split()).filter(it => it.len() > 0)
 #let kjv = json(bytes(read("kjv/json/verses-1769.json")))
-#let esv = json(bytes(read("bible-translations/" + version + "/" + version + "_bible.json")))
+#let esv = if version == none { none } else {
+  json(bytes(read("bible-translations/" + version + "/" + version + "_bible.json")))
+}
 #set text(size: 18pt)
 
-#set page(header: grid(
-  columns: (50%, 50%),
-  align(left, text(rgb("#444444"), book_name)),
-  align(right, text(rgb("#444444"), [SBLGNT / #version])),
-),
-margin: .5in,
+#set page(
+  header: grid(
+    columns: (50%, 50%),
+    align(left, text(rgb("#444444"), book_name)),
+    align(right, text(rgb("#444444"), [SBLGNT#if version != none [#"/" #version]])),
+  ),
+  margin: .5in,
 )
 
 #let tense_colors = (
@@ -61,11 +64,16 @@ margin: .5in,
     }
 
     block([active])
-    block(underline(text(style: "italic", [middle]), stroke: (dash: "dashed"))  )
+    block(underline(text(style: "italic", [middle]), stroke: (dash: "dashed")))
     block(text(style: "italic", [passive]))
   },
 )
-= #book_name
+
+#v(3em)
+
+#align(center, smallcaps[
+  = #book_name
+])
 
 #let chapters = ()
 #let old_chapter = none
@@ -81,7 +89,7 @@ margin: .5in,
   }
   if old_verse != verse {
     chapters.last().push(())
-    while chapters.last().len() < verse  {
+    while chapters.last().len() < verse {
       chapters.last().push(())
     }
     // assert(verse == old_verse + 1 or old_verse == none)
@@ -138,25 +146,35 @@ margin: .5in,
 
 #let kjv_verse(book, chapter, verse) = {
   show regex("\[[^\]]+\]"): it => text(style: "italic", it.text.replace("[", "").replace("]", ""))
-  par(justify: false, text(kjv.at(book + " " + str(chapter) + ":" + str(verse), default: "").replace("#", "").trim(), size: 14pt))
+  par(justify: false, text(
+    kjv.at(book + " " + str(chapter) + ":" + str(verse), default: "").replace("#", "").trim(),
+    size: 14pt,
+  ))
 }
 #let esv_verse(book, chapter, verse) = {
   show regex("\[[^\]]+\]"): it => text(style: "italic", it.text.replace("[", "").replace("]", ""))
-  par(justify: false, text(esv.at(book).at(str(chapter), default: (:)).at(str(verse), default: "").trim().split().join(" "), size: 14pt))
+  par(justify: false, text(
+    esv.at(book).at(str(chapter), default: (:)).at(str(verse), default: "").trim().split().join(" "),
+    size: 14pt,
+  ))
 }
 
 #for (i, chapter) in chapters.enumerate(start: 1) {
   [== Chapter #i]
   for (j, verse) in chapter.enumerate(start: 1) {
     grid(
-      columns: (.5em, 6fr, 4fr),
+      columns: if version == none { (.5em, 1fr) } else { (.5em, 6fr, 4fr) },
       column-gutter: .5em,
       super([#j]),
       verse.join(""),
-      if version == "KJV" {
-      kjv_verse(book_name, i, j)
+      ..if version != none {
+        if version == "KJV" {
+          (kjv_verse(book_name, i, j),)
+        } else {
+          (esv_verse(book_name, i, j),)
+        }
       } else {
-      esv_verse(book_name, i, j)
+        ()
       }
     )
   }
