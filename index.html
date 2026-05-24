@@ -25,9 +25,12 @@
     }
 
     .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 10px;
+      column-width: 220px;
+      column-gap: 10px;
+    }
+
+    .grid>div {
+      margin-bottom: 10px;
     }
   </style>
 </head>

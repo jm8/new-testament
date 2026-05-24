@@ -14,7 +14,12 @@
     align(left, text(rgb("#444444"), book_name)),
     align(right, text(rgb("#444444"), [SBLGNT#if version != none [#"/" #version]])),
   ),
-  margin: .5in,
+  margin: (
+    top: 1in,
+    bottom: .5in,
+    left: .5in,
+    right: .5in,
+  ),
 )
 
 #let tense_colors = (
@@ -69,11 +74,19 @@
   },
 )
 
-#v(3em)
+#v(1em)
 
 #align(center, smallcaps[
   = #book_name
 ])
+
+#v(1em)
+
+#show heading: it => {
+  v(1em)
+  it
+  v(1em)
+}
 
 #let chapters = ()
 #let old_chapter = none
@@ -96,7 +109,7 @@
     old_verse = verse
   }
 
-  let t = t.replace("⸀", "").replace("⸂", "").replace("⸃", "")
+  let t = t.replace("⸀", "").replace("⸂", "").replace("⸃", "").replace("⸁")
 
   let (
     person,
@@ -158,6 +171,8 @@
     size: 14pt,
   ))
 }
+
+#set grid.cell(breakable: false)
 
 #for (i, chapter) in chapters.enumerate(start: 1) {
   [== Chapter #i]
