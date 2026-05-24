@@ -1,3 +1,9 @@
 [submodule "sblgnt"]
 	path = sblgnt
 	url = https://github.com/morphgnt/sblgnt
+[submodule "kjv"]
+	path = kjv
+	url = https://github.com/farskipper/kjv
+[submodule "bible-translations"]
+	path = bible-translations
+	url = https://github.com/jadenzaleski/bible-translations/
