@@ -38,7 +38,7 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:zoom="0.65075327"
      inkscape:cx="455.62583"
-     inkscape:cy="603.14718"
+     inkscape:cy="658.46769"
      inkscape:window-width="1783"
      inkscape:window-height="1113"
      inkscape:window-x="26"
@@ -59,6 +59,13 @@
      id="g1"
      inkscape:groupmode="layer"
      inkscape:label="4">
+    <rect
+       style="fill:#ffffff;stroke-width:1.16989"
+       id="rect5"
+       width="793.70081"
+       height="1122.5197"
+       x="-2.1679689e-06"
+       y="-2.3339842e-05" />
     <g
        id="g2">
       <path
@@ -3788,5 +3795,11 @@
          aria-label="everything in subjection to him."
          transform="matrix(1.3333333,0,0,1.3333333,481.02047,1062.3734)" />
     </g>
+    <rect
+       style="fill:#000000"
+       id="rect4"
+       x="-138.30127"
+       y="58.393867"
+       height="295.04269" />
   </g>
 </svg>
