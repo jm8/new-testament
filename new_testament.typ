@@ -1,3 +1,4 @@
+#import "lib_new_testament.typ": tense_colors, tense_names, case_colors, case_names, _render_word
 #let sblgnt_filename = sys.inputs.at("sblgnt_filename")
 #let book_name = sys.inputs.at("book_name")
 #let version = sys.inputs.at("version", default: none)
@@ -24,40 +25,6 @@
     left: .5in,
     right: .5in,
   ),
-)
-
-#let tense_colors = (
-  "P": rgb("#5Fcc5f88"), // present — muted green
-  "I": rgb("#0088ff88"), // imperfect — muted blue
-  "F": rgb("#ffff4488"), // future — muted gold
-  "A": rgb("#ff333388"), // aorist — muted red
-  "X": rgb("#ff78cc88"), // perfect — muted purple
-  "Y": rgb("#44444488"), // pluperfect — slate blue-gray
-  "Z": rgb("#ff803388"), // future perfect — muted orange
-)
-#let case_colors = (
-  "N": rgb("#0000ff"),
-  "G": rgb("#ff00ff"),
-  "D": green,
-  "A": red,
-  "V": rgb("#000088"),
-)
-#let case_names = (
-  "N": "nominative",
-  "G": "genitive",
-  "D": "dative",
-  "A": "accusitive",
-  "V": "vocative",
-)
-
-#let tense_names = (
-  "P": "present",
-  "I": "imperfect",
-  "F": "future",
-  "A": "aorist",
-  "X": "perfect",
-  "Y": "pluperfect",
-  "Z": "future perfect",
 )
 
 #grid(
@@ -95,7 +62,17 @@
 #let chapters = ()
 #let old_chapter = none
 #let old_verse = none
-#for (loc, part_of_speech, parsing_code, t, word, normalized_word, lemma) in book {
+#for row in book {
+  let (
+    loc,
+    part_of_speech,
+    parsing_code,
+    t,
+    word,
+    normalized_word,
+    lemma,
+  ) = row
+
   let chapter = int(loc.slice(2, 4))
   let verse = int(loc.slice(4, 6))
   if old_chapter != chapter {
@@ -113,77 +90,11 @@
     old_verse = verse
   }
 
-  let t = t.replace("⸀", "").replace("⸂", "").replace("⸃", "").replace("⸁", "")
-
-  let (
-    person,
-    tense,
-    voice,
-    mood,
-    case,
-    number,
-    gender,
-    degree,
-  ) = parsing_code.codepoints()
-
-  let fill = case_colors.at(case, default: black)
-
-
-  let tense_color = tense_colors.at(tense, default: white)
-
-  let style = it => it
-  if voice == "A" {
-    style = it => underline(it)
-  } else if voice == "M" {
-    style = it => underline(text(style: "italic", it), stroke: (dash: "dashed"))
-  } else if voice == "P" {
-    style = it => text(style: "italic", it)
-  }
-
-  let mood_indicator = none
-  if mood == "D" {
-    mood_indicator = "!"
-  } else if mood == "S" {
-    mood_indicator = "S"
-  } else if mood == "O" {
-    mood_indicator = "O"
-  } else if mood == "N" {
-    mood_indicator = "I"
-  }
-
-  let mood_indicator_spacing = {}
-  if mood_indicator != none {
-    mood_indicator = text(size: 10pt, fill: rgb(0, 0, 0, 40%), $cal(#mood_indicator)$)
-    mood_indicator_spacing = h(.2em)
-  }
-
-  // * person (1=1st, 2=2nd, 3=3rd)
-  // * tense (P=present, I=imperfect, F=future, A=aorist, X=perfect, Y=pluperfect)
-  // * voice (A=active, M=middle, P=passive)
-  // * mood (I=indicative, D=imperative, S=subjunctive, O=optative, N=infinitive, P=participle)
-  // * case (N=nominative, G=genitive, D=dative, A=accusative)
-  // * number (S=singular, P=plural)
-  // * gender (M=masculine, F=feminine, N=neuter)
-  // * degree (C=comparative, S=superlative)
-
 
   chapters
     .last()
     .last()
-    .push({
-      box({
-        box(text({
-          mood_indicator
-          mood_indicator_spacing
-          style(t)
-          mood_indicator_spacing
-          mood_indicator
-        }, fill: fill), fill: tense_color, outset: (y: 4pt, x: 2pt))
-      })
-      if not t.ends-with("—") {
-        [ ]
-      }
-    })
+    .push(_render_word(row))
 }
 
 #let kjv_verse(book, chapter, verse) = {
