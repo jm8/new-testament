@@ -140,6 +140,23 @@
     style = it => text(style: "italic", it)
   }
 
+  let mood_indicator = none
+  if mood == "D" {
+    mood_indicator = "!"
+  } else if mood == "S" {
+    mood_indicator = "S"
+  } else if mood == "O" {
+    mood_indicator = "O"
+  } else if mood == "N" {
+    mood_indicator = "I"
+  }
+
+  let mood_indicator_spacing = {}
+  if mood_indicator != none {
+    mood_indicator = text(size: 10pt, fill: rgb(0, 0, 0, 40%), $cal(#mood_indicator)$)
+    mood_indicator_spacing = h(.2em)
+  }
+
   // * person (1=1st, 2=2nd, 3=3rd)
   // * tense (P=present, I=imperfect, F=future, A=aorist, X=perfect, Y=pluperfect)
   // * voice (A=active, M=middle, P=passive)
@@ -154,7 +171,15 @@
     .last()
     .last()
     .push({
-      box(style(text(t, fill: fill)), fill: tense_color, outset: (y: 4pt, x: 2pt))
+      box({
+        box(text({
+          mood_indicator
+          mood_indicator_spacing
+          style(t)
+          mood_indicator_spacing
+          mood_indicator
+        }, fill: fill), fill: tense_color, outset: (y: 4pt, x: 2pt))
+      })
       if not t.ends-with("—") {
         [ ]
       }
