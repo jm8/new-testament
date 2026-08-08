@@ -134,9 +134,53 @@
   "Z": "future perfect",
 )
 
-#let _load_book(book_name) = read("sblgnt/" + _book_files.at(book_name)).split("\n").map(it => it.split()).filter(it => it.len() > 0)
+#let _load_book(book_name) = (
+  read("sblgnt/" + _book_files.at(book_name)).split("\n").map(it => it.split()).filter(it => it.len() > 0)
+)
 
-#let _render_word(row) = {
+#let active = it => underline(it)
+#let middle = it => underline(
+  text(style: "italic", it),
+  stroke: (dash: "dashed"),
+)
+#let passive = it => text(style: "italic", it)
+
+#let moodify(it, mood_indicator) = {
+  if mood_indicator == none {
+    return it
+  }
+  let mood_indicator = if mood_indicator == "!" {
+    box(move(
+      text(
+        size: .6em,
+        fill: rgb(0, 0, 0, 40%),
+        style: "italic",
+        weight: "bold",
+        [!],
+      ),
+      dy: -.06em,
+    ))
+  } else {
+    box(move(
+      text(
+        size: .55em,
+        fill: rgb(0, 0, 0, 40%),
+        $cal(#mood_indicator)$,
+      ),
+      dy: -.06em,
+    ))
+  }
+
+  {
+    mood_indicator
+    h(.2em)
+    it
+    h(.2em)
+    mood_indicator
+  }
+}
+
+#let _render_word(row, extraspace: []) = {
   let (
     loc,
     part_of_speech,
@@ -147,11 +191,7 @@
     lemma,
   ) = row
 
-  let t = t
-    .replace("⸀", "")
-    .replace("⸁", "")
-    .replace("⸂", "")
-    .replace("⸃", "")
+  let t = t.replace("⸀", "").replace("⸁", "").replace("⸂", "").replace("⸃", "")
 
   let (
     person,
@@ -169,14 +209,11 @@
 
   let style = it => it
   if voice == "A" {
-    style = it => underline(it)
+    style = active
   } else if voice == "M" {
-    style = it => underline(
-      text(style: "italic", it),
-      stroke: (dash: "dashed"),
-    )
+    style = middle
   } else if voice == "P" {
-    style = it => text(style: "italic", it)
+    style = passive
   }
 
   let mood_indicator = none
@@ -191,34 +228,20 @@
   }
 
   let spacing = {}
-  if mood_indicator != none {
-    mood_indicator = text(
-      size: 10pt,
-      fill: rgb(0, 0, 0, 40%),
-      $cal(#mood_indicator)$,
-    )
-    spacing = h(.2em)
-  }
-
   [
     #box(
       box(
         text(
           fill: text_fill,
-          [
-            #mood_indicator
-            #spacing
-            #style(t)
-            #spacing
-            #mood_indicator
-          ],
+          style(t),
+          // moodify(style(t), mood_indicator),
         ),
         fill: background,
         outset: (x: 2pt, y: 4pt),
-      )
+      ),
     )
     #if not t.ends-with("—") {
-      h(.25em)
+      extraspace
     }
   ]
 }
@@ -230,10 +253,20 @@
   })
 }
 
-#let verse(book, chapter, verse) = {
-  let book = _load_book(book)
-  let verse = _load_verse(book, chapter, verse)
-  verse.map(_render_word).join()
+#let verse(bookn, chaptern, versen, skip: 0, count: none, glosses: (:)) = {
+  let book = _load_book(bookn)
+  let verse = _load_verse(book, chaptern, versen)
+  for (i, word) in verse.enumerate() {
+    if i >= skip and (count == none or i < skip + count) {
+      _render_word(word)
+      let gloss = glosses.at(str(i), default: none)
+      if gloss != none  {
+        text(size: 23pt, fill: rgb("#444444"))[(#gloss)]
+        [ ]
+      }
+    }
+  }
+  par(text(size: .7em)[#bookn #chaptern:#versen])
 }
 
 #verse("Ephesians", 1, 2)
