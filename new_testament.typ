@@ -94,7 +94,7 @@
   chapters
     .last()
     .last()
-    .push(_render_word(row, extraspace: h(.25em)))
+    .push(_render_word(row, extraspace: h(.05em)))
 }
 
 #let kjv_verse(book, chapter, verse) = {

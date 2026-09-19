@@ -224,7 +224,7 @@
   ) = parsing_code.codepoints()
 
   let text_fill = case_colors.at(case, default: black)
-  let background = tense_colors.at(tense, default: white)
+  let background = tense_colors.at(tense, default: none)
 
   let style = it => it
   if voice == "A" {
@@ -266,7 +266,7 @@
         ),
         fill: background,
         outset: (y: 4pt),
-        inset: (x: 2pt),
+        inset: (x: if background != none { 2pt } else { 0pt }),
       ),
     )#if gloss != none {
       [ ]
