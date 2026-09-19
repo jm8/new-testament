@@ -265,7 +265,8 @@
           moodify(style(core), mood_indicator, person_indicator),
         ),
         fill: background,
-        outset: (x: 2pt, y: 4pt),
+        outset: (y: 4pt),
+        inset: (x: 2pt),
       ),
     )#if gloss != none {
       [ ]
