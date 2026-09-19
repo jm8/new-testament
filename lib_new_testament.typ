@@ -201,7 +201,22 @@
     lemma,
   ) = row
 
-  let t = t.replace("⸀", "").replace("⸁", "").replace("⸂", "").replace("⸃", "")
+  let t = t
+    .replace("⸀", "")
+    .replace("⸁", "")
+    .replace("⸂", "")
+    .replace("⸃", "")
+    .replace("⸄", "")
+    .replace("⸅", "")
+
+  // Split off leading/trailing punctuation so it isn't colored or boxed.
+  // The elision mark (’) is kept as part of the word, since it stands in
+  // for a dropped vowel rather than functioning as sentence punctuation.
+  let lead_m = t.match(regex("^[^\p{L}\p{M}\u{2019}]+"))
+  let lead = if lead_m != none { lead_m.text } else { "" }
+  let trail_m = t.match(regex("[^\p{L}\p{M}\u{2019}]+$"))
+  let trail = if trail_m != none { trail_m.text } else { "" }
+  let core = t.slice(lead.len(), t.len() - trail.len())
 
   let (
     person,
@@ -249,16 +264,16 @@
 
   let spacing = {}
   [
-    #box(
+    #lead#box(
       box(
         text(
           fill: text_fill,
-          moodify(style(t), mood_indicator, person_indicator),
+          moodify(style(core), mood_indicator, person_indicator),
         ),
         fill: background,
         outset: (x: 2pt, y: 4pt),
       ),
-    )
+    )#trail
     #if not t.ends-with("—") {
       extraspace
     }
