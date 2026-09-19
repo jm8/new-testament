@@ -258,7 +258,7 @@
 
   let spacing = {}
   [
-    #lead#box(
+    #box[#lead#box(
       box(
         text(
           fill: text_fill,
@@ -271,7 +271,7 @@
     )#if gloss != none {
       [ ]
       text(size: 23pt, fill: rgb("#444444"))[(#gloss)]
-    }#trail
+    }#trail]
     #if not t.ends-with("—") {
       extraspace
     }
