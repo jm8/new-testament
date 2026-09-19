@@ -190,7 +190,7 @@
   }
 }
 
-#let _render_word(row, extraspace: []) = {
+#let _render_word(row, extraspace: [], gloss: none) = {
   let (
     loc,
     part_of_speech,
@@ -201,13 +201,7 @@
     lemma,
   ) = row
 
-  let t = t
-    .replace("⸀", "")
-    .replace("⸁", "")
-    .replace("⸂", "")
-    .replace("⸃", "")
-    .replace("⸄", "")
-    .replace("⸅", "")
+  let t = t.replace("⸀", "").replace("⸁", "").replace("⸂", "").replace("⸃", "").replace("⸄", "").replace("⸅", "")
 
   // Split off leading/trailing punctuation so it isn't colored or boxed.
   // The elision mark (’) is kept as part of the word, since it stands in
@@ -273,7 +267,10 @@
         fill: background,
         outset: (x: 2pt, y: 4pt),
       ),
-    )#trail
+    )#if gloss != none {
+      [ ]
+      text(size: 23pt, fill: rgb("#444444"))[(#gloss)]
+    }#trail
     #if not t.ends-with("—") {
       extraspace
     }
@@ -287,17 +284,16 @@
   })
 }
 
-#let verse(bookn, chaptern, versen, skip: 0, count: none, glosses: (:)) = {
+#let verse(bookn, chaptern, versen, skip: 0, count: none, glosses: (:), ellipses: ()) = {
   let book = _load_book(bookn)
   let verse = _load_verse(book, chaptern, versen)
   for (i, word) in verse.enumerate() {
-    if i >= skip and (count == none or i < skip + count) {
-      _render_word(word)
-      let gloss = glosses.at(str(i), default: none)
-      if gloss != none {
-        text(size: 23pt, fill: rgb("#444444"))[(#gloss)]
-        [ ]
+    if i in ellipses {
+      if i - 1 not in ellipses {
+        [...]
       }
+    } else if i >= skip and (count == none or i < skip + count) {
+      _render_word(word, gloss: glosses.at(str(i), default: none))
     }
   }
   par(text(size: .7em)[#bookn #chaptern:#versen])
