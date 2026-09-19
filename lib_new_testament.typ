@@ -145,11 +145,8 @@
 )
 #let passive = it => text(style: "italic", it)
 
-#let moodify(it, mood_indicator) = {
-  if mood_indicator == none {
-    return it
-  }
-  let mood_indicator = if mood_indicator == "!" {
+#let moodify(it, mood_indicator, person_indicator) = {
+  let mood_indicator = if mood_indicator == none { none } else if mood_indicator == "!" {
     box(move(
       text(
         size: .6em,
@@ -170,13 +167,26 @@
       dy: -.06em,
     ))
   }
+  let person_indicator = if person_indicator == none { none } else {
+    box(move(
+      text(
+        size: .6em,
+        fill: rgb(0, 0, 0, 40%),
+        style: "normal",
+        smallcaps(person_indicator),
+      ),
+      dy: -.06em,
+    ))
+  }
 
-  {
+  if mood_indicator != none {
     mood_indicator
     h(.2em)
-    it
+  }
+  it
+  if person_indicator != none {
     h(.2em)
-    mood_indicator
+    person_indicator
   }
 }
 
@@ -227,14 +237,23 @@
     mood_indicator = "I"
   }
 
+  let person_indicator = none
+  if mood_indicator != none or mood == "I" {
+    if person != "-" {
+      person_indicator = person
+    }
+    if number != "-" {
+      person_indicator = [#person_indicator#number]
+    }
+  }
+
   let spacing = {}
   [
     #box(
       box(
         text(
           fill: text_fill,
-          style(t),
-          // moodify(style(t), mood_indicator),
+          moodify(style(t), mood_indicator, person_indicator),
         ),
         fill: background,
         outset: (x: 2pt, y: 4pt),
@@ -260,7 +279,7 @@
     if i >= skip and (count == none or i < skip + count) {
       _render_word(word)
       let gloss = glosses.at(str(i), default: none)
-      if gloss != none  {
+      if gloss != none {
         text(size: 23pt, fill: rgb("#444444"))[(#gloss)]
         [ ]
       }
