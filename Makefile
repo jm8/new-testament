@@ -114,3 +114,7 @@ all:
 	typst compile new_testament.typ --input sblgnt_filename=sblgnt/86-Jud-morphgnt.txt --input book_name="Jude" out/none/"Jude".pdf
 	typst compile new_testament.typ --input sblgnt_filename=sblgnt/87-Re-morphgnt.txt --input book_name="Revelation" out/none/"Revelation".pdf
 
+
+book:
+	typst compile book.typ
+	mutool poster -x 2 book.pdf book2.pdf

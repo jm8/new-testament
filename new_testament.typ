@@ -115,8 +115,8 @@
 #set grid.cell(breakable: false)
 
 #for (i, chapter) in chapters.enumerate(start: 1) {
-  [== Chapter #i]
   chapter_counter.update(i)
+  [== Chapter #i]
   for (j, verse) in chapter.enumerate(start: 1) {
     grid(
       columns: if version == none { (.5em, 1fr) } else { (.5em, 6fr, 4fr) },
