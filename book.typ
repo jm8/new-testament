@@ -1,10 +1,10 @@
 #import "lib_new_testament.typ": _load_book, _render_word, case_colors, case_names, tense_colors, tense_names
 
 #let books = (
-  ("ΚΑΤΑ ΜΑΘΘΑΙΟΝ", "Matthew", "ΕΥΑΓΓΕΛΙΟΝ ΚΑΤΑ ΜΑΘΘΑΙΟΝ", "The Gospel According to S. Matthew"),
-  ("ΚΑΤΑ ΜΑΡΚΟΝ", "Mark", "ΕΥΑΓΓΕΛΙΟΝ ΚΑΤΑ ΜΑΡΚΟΝ", "The Gospel According to S. Mark"),
-  ("ΚΑΤΑ ΛΟΥΚΑΝ", "Luke", "ΕΥΑΓΓΕΛΙΟΝ ΚΑΤΑ ΛΟΥΚΑΝ", "The Gospel According to S. Luke"),
-  ("ΚΑΤΑ ΙΩΑΝΝΗΝ", "John", "ΕΥΑΓΓΕΛΙΟΝ ΚΑΤΑ ΙΩΑΝΝΗΝ", "The Gospel According to S. John"),
+  ("ΚΑΤΑ ΜΑΘΘΑΙΟΝ", "Matthew", "ΕΥΑΓΓΕΛΙΟΝ ΚΑΤΑ ΜΑΘΘΑΙΟΝ", "The Gospel According to St. Matthew"),
+  ("ΚΑΤΑ ΜΑΡΚΟΝ", "Mark", "ΕΥΑΓΓΕΛΙΟΝ ΚΑΤΑ ΜΑΡΚΟΝ", "The Gospel According to St. Mark"),
+  ("ΚΑΤΑ ΛΟΥΚΑΝ", "Luke", "ΕΥΑΓΓΕΛΙΟΝ ΚΑΤΑ ΛΟΥΚΑΝ", "The Gospel According to St. Luke"),
+  ("ΚΑΤΑ ΙΩΑΝΝΗΝ", "John", "ΕΥΑΓΓΕΛΙΟΝ ΚΑΤΑ ΙΩΑΝΝΗΝ", "The Gospel According to St. John"),
   ("ΠΡΑΞΕΙΣ ΑΠΟΣΤΟΛΩΝ", "Acts", "ΠΡΑΞΕΙΣ ΤΩΝ ΑΠΟΣΤΟΛΩΝ", "The Acts of the Apostles"),
   ("ΠΡΟΣ ΡΩΜΑΙΟΥΣ", "Romans", "ΠΡΟΣ ΡΩΜΑΙΟΥΣ ΕΠΙΣΤΟΛΗ", "The Epistle of Paul the Apostle to the Romans"),
   ("ΠΡΟΣ ΚΟΡΙΝΘΙΟΥΣ Α", "1 Corinthians", "ΠΡΟΣ ΚΟΡΙΝΘΙΟΥΣ ΕΠΙΣΤΟΛΗ ΠΡΩΤΗ", "The First Epistle of Paul the Apostle to the Corinthians"),
@@ -27,7 +27,7 @@
   ("ΙΩΑΝΝΟΥ ΕΠΙΣΤΟΛΗ Β", "2 John", "ΙΩΑΝΝΟΥ ΕΠΙΣΤΟΛΗ ΚΑΘΟΛΙΚΗ ΔΕΥΤΕΡΑ", "The Second Epistle General of John"),
   ("ΙΩΑΝΝΟΥ ΕΠΙΣΤΟΛΗ Γ", "3 John", "ΙΩΑΝΝΟΥ ΕΠΙΣΤΟΛΗ ΚΑΘΟΛΙΚΗ ΤΡΙΤΗ", "The Third Epistle General of John"),
   ("ΙΟΥΔΑ ΕΠΙΣΤΟΛΗ", "Jude", "ΙΟΥΔΑ ΕΠΙΣΤΟΛΗ ΚΑΘΟΛΙΚΗ", "The General Epistle of Jude"),
-  ("ΑΠΟΚΑΛΥΨΙΣ ΙΩΑΝΝΟΥ", "Revelation", "ΑΠΟΚΑΛΥΨΙΣ ΙΩΑΝΝΟΥ", "The Revelation of Saint John the Divine"),
+  ("ΑΠΟΚΑΛΥΨΙΣ ΙΩΑΝΝΟΥ", "Revelation", "ΑΠΟΚΑΛΥΨΙΣ ΙΩΑΝΝΟΥ", "The Revelation of St. John"),
 )
 
 #let width = 6in
@@ -38,17 +38,13 @@
 
 #let kjv = json(bytes(read("kjv/json/verses-1769.json")))
 
-#let chapter_counter = counter("chapter")
-#let verse_counter = counter("verse")
-#let book_counter = counter("book")
-
 #set page(width: width * 2, height: height, margin: (
   left: left_margin,
   right: outside_margin,
   top: outside_margin,
   bottom: outside_margin,
 ))
-#set text(size: 11pt)
+#set text(size: 12pt)
 #let pagegrid = (..args) => grid(
   columns: (width - left_margin - inside_margin, width - outside_margin - inside_margin),
   column-gutter: inside_margin * 2,
@@ -58,13 +54,13 @@
 #let col_width = width - left_margin - inside_margin
 #let content_height = height - outside_margin - outside_margin - 2pt
 #let min_gutter = 0.25in
-#let max_gutter = 1in
+#let max_gutter = 0.5in
 
 #let kjv_verse(book, chapter, verse) = {
   show regex("\[[^\]]+\]"): it => text(style: "italic", it.text.replace("[", "").replace("]", ""))
   par(justify: true, text(
     kjv.at(book + " " + str(chapter) + ":" + str(verse), default: "").replace("#", "").trim(),
-    size: 11pt,
+    size: 12pt,
   ))
 }
 
@@ -72,7 +68,7 @@
   let num = if j == 1 {
     text(size: 28pt, fill: rgb("#444444"), weight: "bold", [#i])
   } else {
-    move(text(fill: rgb("#444444"), size: 7pt, [#j]), dy: 0pt)
+    move(text(fill: rgb("#444444"), size: 10pt, [#j]), dy: 0pt)
   }
   box(
     grid(
@@ -84,8 +80,27 @@
   )
 }
 
+// Header for one physical half-page: shows the chapter:verse of the
+// first verse on the page (passed in explicitly, computed from the
+// pagination below), the short book name, and the page number.
+#let page_header(book_names, lang, i, j) = context {
+  set text(fill: rgb("#444444"))
+  let p = 2 * counter(page).get().first() + lang - 1
+  grid(
+    columns: (0in, 1fr, 0in),
+    align(left, [#i:#j]), align(center, book_names.at(lang)), align(right, [#p]),
+  )
+}
+#let page_header_row(book_names, i, j) = pagegrid(
+  page_header(book_names, 0, i, j),
+  page_header(book_names, 1, i, j),
+  align: center,
+)
+
 #let render_book(book_num) = {
-  let (_, book_name, title_gr, title_en) = books.at(book_num)
+  let (short_gr, short_en, title_gr, title_en) = books.at(book_num)
+  let book_name = short_en
+  let book_names = (short_gr, short_en)
   let book = _load_book(book_name)
 
   let chapters = ()
@@ -128,10 +143,6 @@
       verses.push((i, j, par(justify: true, verse.join("")), kjv_verse(book_name, i, j)))
     }
   }
-
-  chapter_counter.update(1)
-  verse_counter.update(1)
-  book_counter.update(book_num)
 
   let title_gap = .35in
   let title_gr_content = align(center, text(size: 20pt, weight: "bold", title_gr))
@@ -186,19 +197,12 @@
 
       let grid_elements = ()
       for (i, j, greek, kjv, h) in page_verses {
-        grid_elements.push({
-          chapter_counter.update(i)
-          verse_counter.update(j)
-        })
-        grid_elements.push({
-          chapter_counter.update(i)
-          verse_counter.update(j)
-        })
         grid_elements.push(do_verse(i, j, greek))
         grid_elements.push(do_verse(i, j, kjv))
       }
 
-      let row_gutters = range(2 * page_verses.len() - 1).map(idx => if calc.rem(idx, 2) == 0 { 0pt } else { gutter })
+      let (first_i, first_j, ..) = page_verses.first()
+      let row_gutters = (gutter,) * (page_verses.len() - 1)
 
       page_content.push(pagebreak(weak: true))
       if is_first {
@@ -210,30 +214,16 @@
           )
         ])
       } else {
-        page_content.push(pagegrid(..grid_elements, row-gutter: row_gutters))
+        page_content.push(page(header: page_header_row(book_names, first_i, first_j))[
+          #pagegrid(..grid_elements, row-gutter: row_gutters)
+        ])
       }
     }
     page_content.join()
   }
 }
 
-#let header(lang) = context {
-  set text(fill: rgb("#444444"))
-  let book_name = books.at(book_counter.get().first()).at(lang)
-  let p = 2 * counter(page).get().first() + lang - 1
-  grid(
-    columns: (0in, 1fr, 0in),
-    align(left, [#chapter_counter.display():#verse_counter.display()]), align(center, book_name), align(right, [#p]),
-  )
-}
-
-#set page(header: pagegrid(
-  header(0),
-  header(1),
-  align: center,
-))
-
-#render_book(26)
+#render_book(0)
 
 
 

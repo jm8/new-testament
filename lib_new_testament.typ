@@ -145,12 +145,13 @@
 )
 #let passive = it => text(style: "italic", it)
 
+#let mood_indicator_opacity = 100%
 #let moodify(it, mood_indicator, person_indicator) = {
   let mood_indicator = if mood_indicator == none { none } else if mood_indicator == "!" {
     box(move(
       text(
         size: .6em,
-        fill: rgb(0, 0, 0, 40%),
+        fill: rgb(0, 0, 0, mood_indicator_opacity),
         style: "italic",
         weight: "bold",
         [!],
@@ -161,7 +162,7 @@
     box(move(
       text(
         size: .55em,
-        fill: rgb(0, 0, 0, 40%),
+        fill: rgb(0, 0, 0, mood_indicator_opacity),
         $cal(#mood_indicator)$,
       ),
       dy: -.06em,
@@ -171,9 +172,9 @@
     box(move(
       text(
         size: .6em,
-        fill: rgb(0, 0, 0, 40%),
+        fill: rgb(0, 0, 0, mood_indicator_opacity),
         style: "normal",
-        smallcaps(person_indicator),
+        upper(person_indicator),
       ),
       dy: -.06em,
     ))
