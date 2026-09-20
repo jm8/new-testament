@@ -32,8 +32,8 @@
 
 #let width = 6in
 #let height = 9in
-#let left_margin = .75in
-#let outside_margin = 0.75in
+#let left_margin = 1in
+#let outside_margin = 1in
 #let inside_margin = 1.5in
 
 #let kjv = json(bytes(read("kjv/json/verses-1769.json")))
@@ -54,6 +54,11 @@
   column-gutter: inside_margin * 2,
   ..args,
 )
+
+#let col_width = width - left_margin - inside_margin
+#let content_height = height - outside_margin - outside_margin - 2pt
+#let min_gutter = 0.25in
+#let max_gutter = 1in
 
 #let kjv_verse(book, chapter, verse) = {
   show regex("\[[^\]]+\]"): it => text(style: "italic", it.text.replace("[", "").replace("]", ""))
@@ -117,29 +122,74 @@
     chapters.last().last().push(_render_word(row, extraspace: h(.05em)))
   }
 
-  let grid_elements = ()
-
+  let verses = ()
   for (i, chapter) in chapters.enumerate(start: 1) {
     for (j, verse) in chapter.enumerate(start: 1) {
-      grid_elements.push({
-        chapter_counter.update(i)
-        verse_counter.update(j)
-      })
-      grid_elements.push({
-        chapter_counter.update(i)
-        verse_counter.update(j)
-      })
-      grid_elements.push(do_verse(i, j, par(justify: true, verse.join(""))))
-      grid_elements.push(do_verse(i, j, kjv_verse(book_name, i, j)))
+      verses.push((i, j, par(justify: true, verse.join("")), kjv_verse(book_name, i, j)))
     }
   }
 
   chapter_counter.update(1)
   verse_counter.update(1)
   book_counter.update(book_num)
-  page(
-    pagegrid(..grid_elements, row-gutter: (0pt, 1fr)),
-  )
+
+  context {
+    // Simulate pagination so we know, per page, how much leftover
+    // vertical space there is to distribute between verses (clamped
+    // 1fr-style spacing instead of an unbounded 1fr).
+    let pages = ()
+    let cur = ()
+    let cur_height = 0pt
+    for (i, j, greek, kjv) in verses {
+      let gh = measure(box(width: col_width, do_verse(i, j, greek))).height
+      let kh = measure(box(width: col_width, do_verse(i, j, kjv))).height
+      let h = calc.max(gh, kh)
+      let gaps = cur.len()
+      let required = cur_height + h + gaps * min_gutter
+      if cur.len() == 0 or required <= content_height {
+        cur.push((i, j, greek, kjv, h))
+        cur_height += h
+      } else {
+        pages.push((cur, cur_height))
+        cur = ((i, j, greek, kjv, h),)
+        cur_height = h
+      }
+    }
+    if cur.len() > 0 {
+      pages.push((cur, cur_height))
+    }
+
+    let page_content = ()
+    for (page_idx, (page_verses, sum_h)) in pages.enumerate() {
+      let gaps = page_verses.len() - 1
+      let gutter = if gaps <= 0 {
+        0pt
+      } else {
+        let g = (content_height - sum_h) / gaps
+        calc.max(min_gutter, calc.min(max_gutter, g))
+      }
+
+      let grid_elements = ()
+      for (i, j, greek, kjv, h) in page_verses {
+        grid_elements.push({
+          chapter_counter.update(i)
+          verse_counter.update(j)
+        })
+        grid_elements.push({
+          chapter_counter.update(i)
+          verse_counter.update(j)
+        })
+        grid_elements.push(do_verse(i, j, greek))
+        grid_elements.push(do_verse(i, j, kjv))
+      }
+
+      let row_gutters = range(2 * page_verses.len() - 1).map(idx => if calc.rem(idx, 2) == 0 { 0pt } else { gutter })
+
+      page_content.push(pagebreak(weak: true))
+      page_content.push(pagegrid(..grid_elements, row-gutter: row_gutters))
+    }
+    page_content.join()
+  }
 }
 
 #let header(lang) = context {
@@ -157,7 +207,7 @@
   align: center,
 ))
 
-#render_book(22)
+#render_book(26)
 
 
 

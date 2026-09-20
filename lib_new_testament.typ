@@ -101,13 +101,13 @@
 )
 
 #let tense_colors = (
-  "P": rgb("#5Fcc5f88"), // present — muted green
-  "I": rgb("#0088ff88"), // imperfect — muted blue
-  "F": rgb("#ffff4488"), // future — muted gold
-  "A": rgb("#ff333388"), // aorist — muted red
-  "X": rgb("#ff78cc88"), // perfect — muted purple
-  "Y": rgb("#44444488"), // pluperfect — slate blue-gray
-  "Z": rgb("#ff803388"), // future perfect — muted orange
+  "P": rgb("#AAE4AA"), // present — muted green
+  "I": rgb("#77C0FF"), // imperfect — muted blue
+  "F": rgb("#FFFF9B"), // future — muted gold
+  "A": rgb("#FF9292"), // aorist — muted red
+  "X": rgb("#FFB7E4"), // perfect — muted purple
+  "Y": rgb("#9B9B9B"), // pluperfect — slate blue-gray
+  "Z": rgb("#FFBB92"), // future perfect — muted orange
 )
 #let case_colors = (
   "N": rgb("#0000ff"),
