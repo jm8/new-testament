@@ -1,33 +1,33 @@
 #import "lib_new_testament.typ": _load_book, _render_word, case_colors, case_names, tense_colors, tense_names
 
 #let books = (
-  ("ΚΑΤΑ ΜΑΘΘΑΙΟΝ", "Matthew"),
-  ("ΚΑΤΑ ΜΑΡΚΟΝ", "Mark"),
-  ("ΚΑΤΑ ΛΟΥΚΑΝ", "Luke"),
-  ("ΚΑΤΑ ΙΩΑΝΝΗΝ", "John"),
-  ("ΠΡΑΞΕΙΣ ΑΠΟΣΤΟΛΩΝ", "Acts"),
-  ("ΠΡΟΣ ΡΩΜΑΙΟΥΣ", "Romans"),
-  ("ΠΡΟΣ ΚΟΡΙΝΘΙΟΥΣ Α", "1 Corinthians"),
-  ("ΠΡΟΣ ΚΟΡΙΝΘΙΟΥΣ Β", "2 Corinthians"),
-  ("ΠΡΟΣ ΓΑΛΑΤΑΣ", "Galatians"),
-  ("ΠΡΟΣ ΕΦΕΣΙΟΥΣ", "Ephesians"),
-  ("ΠΡΟΣ ΦΙΛΙΠΠΗΣΙΟΥΣ", "Philippians"),
-  ("ΠΡΟΣ ΚΟΛΑΣΣΑΕΙΣ", "Colossians"),
-  ("ΠΡΟΣ ΘΕΣΣΑΛΟΝΙΚΕΙΣ Α", "1 Thessalonians"),
-  ("ΠΡΟΣ ΘΕΣΣΑΛΟΝΙΚΕΙΣ Β", "2 Thessalonians"),
-  ("ΠΡΟΣ ΤΙΜΟΘΕΟΝ Α", "1 Timothy"),
-  ("ΠΡΟΣ ΤΙΜΟΘΕΟΝ Β", "2 Timothy"),
-  ("ΠΡΟΣ ΤΙΤΟΝ", "Titus"),
-  ("ΠΡΟΣ ΦΙΛΗΜΟΝΑ", "Philemon"),
-  ("ΠΡΟΣ ΕΒΡΑΙΟΥΣ", "Hebrews"),
-  ("ΙΑΚΩΒΟΥ ΕΠΙΣΤΟΛΗ", "James"),
-  ("ΠΕΤΡΟΥ ΕΠΙΣΤΟΛΗ Α", "1 Peter"),
-  ("ΠΕΤΡΟΥ ΕΠΙΣΤΟΛΗ Β", "2 Peter"),
-  ("ΙΩΑΝΝΟΥ ΕΠΙΣΤΟΛΗ Α", "1 John"),
-  ("ΙΩΑΝΝΟΥ ΕΠΙΣΤΟΛΗ Β", "2 John"),
-  ("ΙΩΑΝΝΟΥ ΕΠΙΣΤΟΛΗ Γ", "3 John"),
-  ("ΙΟΥΔΑ ΕΠΙΣΤΟΛΗ", "Jude"),
-  ("ΑΠΟΚΑΛΥΨΙΣ ΙΩΑΝΝΟΥ", "Revelation"),
+  ("ΚΑΤΑ ΜΑΘΘΑΙΟΝ", "Matthew", "ΕΥΑΓΓΕΛΙΟΝ ΚΑΤΑ ΜΑΘΘΑΙΟΝ", "The Gospel According to S. Matthew"),
+  ("ΚΑΤΑ ΜΑΡΚΟΝ", "Mark", "ΕΥΑΓΓΕΛΙΟΝ ΚΑΤΑ ΜΑΡΚΟΝ", "The Gospel According to S. Mark"),
+  ("ΚΑΤΑ ΛΟΥΚΑΝ", "Luke", "ΕΥΑΓΓΕΛΙΟΝ ΚΑΤΑ ΛΟΥΚΑΝ", "The Gospel According to S. Luke"),
+  ("ΚΑΤΑ ΙΩΑΝΝΗΝ", "John", "ΕΥΑΓΓΕΛΙΟΝ ΚΑΤΑ ΙΩΑΝΝΗΝ", "The Gospel According to S. John"),
+  ("ΠΡΑΞΕΙΣ ΑΠΟΣΤΟΛΩΝ", "Acts", "ΠΡΑΞΕΙΣ ΤΩΝ ΑΠΟΣΤΟΛΩΝ", "The Acts of the Apostles"),
+  ("ΠΡΟΣ ΡΩΜΑΙΟΥΣ", "Romans", "ΠΡΟΣ ΡΩΜΑΙΟΥΣ ΕΠΙΣΤΟΛΗ", "The Epistle of Paul the Apostle to the Romans"),
+  ("ΠΡΟΣ ΚΟΡΙΝΘΙΟΥΣ Α", "1 Corinthians", "ΠΡΟΣ ΚΟΡΙΝΘΙΟΥΣ ΕΠΙΣΤΟΛΗ ΠΡΩΤΗ", "The First Epistle of Paul the Apostle to the Corinthians"),
+  ("ΠΡΟΣ ΚΟΡΙΝΘΙΟΥΣ Β", "2 Corinthians", "ΠΡΟΣ ΚΟΡΙΝΘΙΟΥΣ ΕΠΙΣΤΟΛΗ ΔΕΥΤΕΡΑ", "The Second Epistle of Paul the Apostle to the Corinthians"),
+  ("ΠΡΟΣ ΓΑΛΑΤΑΣ", "Galatians", "ΠΡΟΣ ΓΑΛΑΤΑΣ ΕΠΙΣΤΟΛΗ", "The Epistle of Paul the Apostle to the Galatians"),
+  ("ΠΡΟΣ ΕΦΕΣΙΟΥΣ", "Ephesians", "ΠΡΟΣ ΕΦΕΣΙΟΥΣ ΕΠΙΣΤΟΛΗ", "The Epistle of Paul the Apostle to the Ephesians"),
+  ("ΠΡΟΣ ΦΙΛΙΠΠΗΣΙΟΥΣ", "Philippians", "ΠΡΟΣ ΦΙΛΙΠΠΗΣΙΟΥΣ ΕΠΙΣΤΟΛΗ", "The Epistle of Paul the Apostle to the Philippians"),
+  ("ΠΡΟΣ ΚΟΛΑΣΣΑΕΙΣ", "Colossians", "ΠΡΟΣ ΚΟΛΟΣΣΑΕΙΣ ΕΠΙΣΤΟΛΗ", "The Epistle of Paul the Apostle to the Colossians"),
+  ("ΠΡΟΣ ΘΕΣΣΑΛΟΝΙΚΕΙΣ Α", "1 Thessalonians", "ΠΡΟΣ ΘΕΣΣΑΛΟΝΙΚΕΙΣ ΕΠΙΣΤΟΛΗ ΠΡΩΤΗ", "The First Epistle of Paul the Apostle to the Thessalonians"),
+  ("ΠΡΟΣ ΘΕΣΣΑΛΟΝΙΚΕΙΣ Β", "2 Thessalonians", "ΠΡΟΣ ΘΕΣΣΑΛΟΝΙΚΕΙΣ ΕΠΙΣΤΟΛΗ ΔΕΥΤΕΡΑ", "The Second Epistle of Paul the Apostle to the Thessalonians"),
+  ("ΠΡΟΣ ΤΙΜΟΘΕΟΝ Α", "1 Timothy", "ΠΡΟΣ ΤΙΜΟΘΕΟΝ ΕΠΙΣΤΟΛΗ ΠΡΩΤΗ", "The First Epistle of Paul the Apostle to Timothy"),
+  ("ΠΡΟΣ ΤΙΜΟΘΕΟΝ Β", "2 Timothy", "ΠΡΟΣ ΤΙΜΟΘΕΟΝ ΕΠΙΣΤΟΛΗ ΔΕΥΤΕΡΑ", "The Second Epistle of Paul the Apostle to Timothy"),
+  ("ΠΡΟΣ ΤΙΤΟΝ", "Titus", "ΠΡΟΣ ΤΙΤΟΝ ΕΠΙΣΤΟΛΗ", "The Epistle of Paul the Apostle to Titus"),
+  ("ΠΡΟΣ ΦΙΛΗΜΟΝΑ", "Philemon", "ΠΡΟΣ ΦΙΛΗΜΟΝΑ ΕΠΙΣΤΟΛΗ", "The Epistle of Paul the Apostle to Philemon"),
+  ("ΠΡΟΣ ΕΒΡΑΙΟΥΣ", "Hebrews", "ΠΡΟΣ ΕΒΡΑΙΟΥΣ ΕΠΙΣΤΟΛΗ", "The Epistle of Paul the Apostle to the Hebrews"),
+  ("ΙΑΚΩΒΟΥ ΕΠΙΣΤΟΛΗ", "James", "ΙΑΚΩΒΟΥ ΕΠΙΣΤΟΛΗ ΚΑΘΟΛΙΚΗ", "The General Epistle of James"),
+  ("ΠΕΤΡΟΥ ΕΠΙΣΤΟΛΗ Α", "1 Peter", "ΠΕΤΡΟΥ ΕΠΙΣΤΟΛΗ ΚΑΘΟΛΙΚΗ ΠΡΩΤΗ", "The First Epistle General of Peter"),
+  ("ΠΕΤΡΟΥ ΕΠΙΣΤΟΛΗ Β", "2 Peter", "ΠΕΤΡΟΥ ΕΠΙΣΤΟΛΗ ΚΑΘΟΛΙΚΗ ΔΕΥΤΕΡΑ", "The Second Epistle General of Peter"),
+  ("ΙΩΑΝΝΟΥ ΕΠΙΣΤΟΛΗ Α", "1 John", "ΙΩΑΝΝΟΥ ΕΠΙΣΤΟΛΗ ΚΑΘΟΛΙΚΗ ΠΡΩΤΗ", "The First Epistle General of John"),
+  ("ΙΩΑΝΝΟΥ ΕΠΙΣΤΟΛΗ Β", "2 John", "ΙΩΑΝΝΟΥ ΕΠΙΣΤΟΛΗ ΚΑΘΟΛΙΚΗ ΔΕΥΤΕΡΑ", "The Second Epistle General of John"),
+  ("ΙΩΑΝΝΟΥ ΕΠΙΣΤΟΛΗ Γ", "3 John", "ΙΩΑΝΝΟΥ ΕΠΙΣΤΟΛΗ ΚΑΘΟΛΙΚΗ ΤΡΙΤΗ", "The Third Epistle General of John"),
+  ("ΙΟΥΔΑ ΕΠΙΣΤΟΛΗ", "Jude", "ΙΟΥΔΑ ΕΠΙΣΤΟΛΗ ΚΑΘΟΛΙΚΗ", "The General Epistle of Jude"),
+  ("ΑΠΟΚΑΛΥΨΙΣ ΙΩΑΝΝΟΥ", "Revelation", "ΑΠΟΚΑΛΥΨΙΣ ΙΩΑΝΝΟΥ", "The Revelation of Saint John the Divine"),
 )
 
 #let width = 6in
@@ -48,7 +48,7 @@
   top: outside_margin,
   bottom: outside_margin,
 ))
-#set text(size: 12pt)
+#set text(size: 11pt)
 #let pagegrid = (..args) => grid(
   columns: (width - left_margin - inside_margin, width - outside_margin - inside_margin),
   column-gutter: inside_margin * 2,
@@ -64,15 +64,15 @@
   show regex("\[[^\]]+\]"): it => text(style: "italic", it.text.replace("[", "").replace("]", ""))
   par(justify: true, text(
     kjv.at(book + " " + str(chapter) + ":" + str(verse), default: "").replace("#", "").trim(),
-    size: 12pt,
+    size: 11pt,
   ))
 }
 
 #let do_verse(i, j, it) = {
   let num = if j == 1 {
-    text(size: 36pt, weight: "bold", [#i])
+    text(size: 28pt, fill: rgb("#444444"), weight: "bold", [#i])
   } else {
-    move(text(size: 10pt, [#j]), dy: 0pt)
+    move(text(fill: rgb("#444444"), size: 7pt, [#j]), dy: 0pt)
   }
   box(
     grid(
@@ -85,7 +85,7 @@
 }
 
 #let render_book(book_num) = {
-  let book_name = books.at(book_num).at(1)
+  let (_, book_name, title_gr, title_en) = books.at(book_num)
   let book = _load_book(book_name)
 
   let chapters = ()
@@ -133,10 +133,22 @@
   verse_counter.update(1)
   book_counter.update(book_num)
 
+  let title_gap = .35in
+  let title_gr_content = align(center, text(size: 20pt, weight: "bold", title_gr))
+  let title_en_content = align(center, text(size: 20pt, weight: "bold", title_en))
+
   context {
     // Simulate pagination so we know, per page, how much leftover
     // vertical space there is to distribute between verses (clamped
-    // 1fr-style spacing instead of an unbounded 1fr).
+    // 1fr-style spacing instead of an unbounded 1fr). The first page of
+    // the book is shorter than the rest: it must also fit the chapter
+    // title above the verses.
+    let title_height = calc.max(
+      measure(box(width: col_width, title_gr_content)).height,
+      measure(box(width: col_width, title_en_content)).height,
+    )
+    let first_page_height = content_height - title_height - title_gap
+
     let pages = ()
     let cur = ()
     let cur_height = 0pt
@@ -145,8 +157,9 @@
       let kh = measure(box(width: col_width, do_verse(i, j, kjv))).height
       let h = calc.max(gh, kh)
       let gaps = cur.len()
+      let page_height = if pages.len() == 0 { first_page_height } else { content_height }
       let required = cur_height + h + gaps * min_gutter
-      if cur.len() == 0 or required <= content_height {
+      if cur.len() == 0 or required <= page_height {
         cur.push((i, j, greek, kjv, h))
         cur_height += h
       } else {
@@ -161,11 +174,13 @@
 
     let page_content = ()
     for (page_idx, (page_verses, sum_h)) in pages.enumerate() {
+      let is_first = page_idx == 0
+      let page_height = if is_first { first_page_height } else { content_height }
       let gaps = page_verses.len() - 1
       let gutter = if gaps <= 0 {
         0pt
       } else {
-        let g = (content_height - sum_h) / gaps
+        let g = (page_height - sum_h) / gaps
         calc.max(min_gutter, calc.min(max_gutter, g))
       }
 
@@ -186,7 +201,17 @@
       let row_gutters = range(2 * page_verses.len() - 1).map(idx => if calc.rem(idx, 2) == 0 { 0pt } else { gutter })
 
       page_content.push(pagebreak(weak: true))
-      page_content.push(pagegrid(..grid_elements, row-gutter: row_gutters))
+      if is_first {
+        page_content.push(page(header: none)[
+          #pagegrid(
+            title_gr_content, title_en_content,
+            ..grid_elements,
+            row-gutter: (title_gap,) + row_gutters,
+          )
+        ])
+      } else {
+        page_content.push(pagegrid(..grid_elements, row-gutter: row_gutters))
+      }
     }
     page_content.join()
   }
@@ -195,9 +220,10 @@
 #let header(lang) = context {
   set text(fill: rgb("#444444"))
   let book_name = books.at(book_counter.get().first()).at(lang)
+  let p = 2 * counter(page).get().first() + lang - 1
   grid(
     columns: (0in, 1fr, 0in),
-    align(left, [#chapter_counter.display():#verse_counter.display()]), align(center, book_name), align(right, counter(page).display()),
+    align(left, [#chapter_counter.display():#verse_counter.display()]), align(center, book_name), align(right, [#p]),
   )
 }
 
